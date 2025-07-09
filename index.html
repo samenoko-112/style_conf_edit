@@ -1,0 +1,731 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AviUtl2 Style Editor</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@100..900&family=Roboto:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons@latest/iconfont/tabler-icons.min.css">
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div class="container">
+        <header class="header">
+            <h1><i class="ti ti-palette"></i> AviUtl2 Style Editor</h1>
+            <div class="header-actions">
+                <button id="loadFile" class="btn btn-primary">
+                    <i class="ti ti-upload"></i> ファイル読み込み
+                </button>
+                <button id="saveFile" class="btn btn-success">
+                    <i class="ti ti-download"></i> ファイル保存
+                </button>
+                <button id="resetChanges" class="btn btn-warning">
+                    <i class="ti ti-refresh"></i> 変更をリセット
+                </button>
+            </div>
+        </header>
+
+        <div class="main-content">
+            <div class="sidebar">
+                <nav class="nav-tabs">
+                    <button class="nav-tab active" data-section="font">
+                        <i class="ti ti-letter-case-toggle"></i> フォント
+                    </button>
+                    <button class="nav-tab" data-section="color">
+                        <i class="ti ti-palette"></i> カラー
+                    </button>
+                    <button class="nav-tab" data-section="layout">
+                        <i class="ti ti-layout"></i> レイアウト
+                    </button>
+                    <button class="nav-tab" data-section="format">
+                        <i class="ti ti-code"></i> フォーマット
+                    </button>
+                </nav>
+            </div>
+
+            <div class="content">
+                <!-- フォント設定セクション -->
+                <div id="font" class="section active">
+                    <h2><i class="ti ti-letter-case-toggle"></i> フォント設定</h2>
+                    <div class="settings-grid">
+                        <div class="setting-item">
+                            <label for="defaultFamily">標準フォント</label>
+                            <input type="text" id="defaultFamily" data-key="DefaultFamily" placeholder="Yu Gothic UI">
+                        </div>
+                        <div class="setting-item">
+                            <label for="controlFont">コントロールフォント</label>
+                            <input type="number" id="controlFont" data-key="Control" placeholder="13">
+                        </div>
+                        <div class="setting-item">
+                            <label for="editControlFont">エディットコントロールフォント</label>
+                            <input type="text" id="editControlFont" data-key="EditControl" placeholder="13,Consolas">
+                        </div>
+                        <div class="setting-item">
+                            <label for="previewTimeFont">プレビュー時間表示フォント</label>
+                            <input type="number" id="previewTimeFont" data-key="PreviewTime" placeholder="16">
+                        </div>
+                        <div class="setting-item">
+                            <label for="layerObjectFont">レイヤー・オブジェクト編集フォント</label>
+                            <input type="number" id="layerObjectFont" data-key="LayerObject" placeholder="16">
+                        </div>
+                        <div class="setting-item">
+                            <label for="timeGaugeFont">フレーム時間ゲージフォント</label>
+                            <input type="number" id="timeGaugeFont" data-key="TimeGauge" placeholder="13">
+                        </div>
+                        <div class="setting-item">
+                            <label for="footerFont">フッターフォント</label>
+                            <input type="number" id="footerFont" data-key="Footer" placeholder="14">
+                        </div>
+                        <div class="setting-item">
+                            <label for="textEditFont">テキスト編集フォント</label>
+                            <input type="text" id="textEditFont" data-key="TextEdit" placeholder="16,Consolas">
+                        </div>
+                        <div class="setting-item">
+                            <label for="logFont">ログフォント</label>
+                            <input type="text" id="logFont" data-key="Log" placeholder="12,Consolas">
+                        </div>
+                    </div>
+                </div>
+
+                <!-- カラー設定セクション -->
+                <div id="color" class="section">
+                    <h2><i class="ti ti-palette"></i> カラー設定</h2>
+                    <div class="settings-grid">
+                        <div class="setting-item">
+                            <label for="background">背景色</label>
+                            <div class="color-input-group">
+                                <input type="color" id="background" data-key="Background" value="#202020">
+                                <input type="text" class="color-hex" placeholder="202020">
+                            </div>
+                        </div>
+                        <div class="setting-item">
+                            <label for="windowBorder">ウィンドウ枠線色</label>
+                            <div class="color-input-group">
+                                <input type="color" id="windowBorder" data-key="WindowBorder" value="#585858">
+                                <input type="text" class="color-hex" placeholder="585858">
+                            </div>
+                        </div>
+                        <div class="setting-item">
+                            <label for="windowSeparator">ウィンドウ間背景色</label>
+                            <div class="color-input-group">
+                                <input type="color" id="windowSeparator" data-key="WindowSeparator" value="#000000">
+                                <input type="text" class="color-hex" placeholder="000000">
+                            </div>
+                        </div>
+                        <div class="setting-item">
+                            <label for="footer">フッター背景色</label>
+                            <div class="color-input-group">
+                                <input type="color" id="footer" data-key="Footer" value="#304080">
+                                <input type="text" class="color-hex" placeholder="304080">
+                            </div>
+                        </div>
+                        <div class="setting-item">
+                            <label for="footerProgress">フッター進捗色（グラデーション）</label>
+                            <div class="gradient-input-group">
+                                <div class="color-input-group">
+                                    <input type="color" id="footerProgress1" data-key="FooterProgress" data-index="0" value="#903838">
+                                    <input type="text" class="color-hex" placeholder="903838">
+                                </div>
+                                <div class="color-input-group">
+                                    <input type="color" id="footerProgress2" data-key="FooterProgress" data-index="1" value="#b84848">
+                                    <input type="text" class="color-hex" placeholder="b84848">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="setting-item">
+                            <label for="text">テキスト色</label>
+                            <div class="color-input-group">
+                                <input type="color" id="text" data-key="Text" value="#ffffff">
+                                <input type="text" class="color-hex" placeholder="ffffff">
+                            </div>
+                        </div>
+                        <div class="setting-item">
+                            <label for="textDisable">無効テキスト色</label>
+                            <div class="color-input-group">
+                                <input type="color" id="textDisable" data-key="TextDisable" value="#909090">
+                                <input type="text" class="color-hex" placeholder="909090">
+                            </div>
+                        </div>
+                        <div class="setting-item">
+                            <label for="textSelect">選択テキスト色</label>
+                            <div class="color-input-group">
+                                <input type="color" id="textSelect" data-key="TextSelect" value="#6060e0">
+                                <input type="text" class="color-hex" placeholder="6060e0">
+                            </div>
+                        </div>
+                        <div class="setting-item">
+                            <label for="buttonBody">ボタン背景色</label>
+                            <div class="color-input-group">
+                                <input type="color" id="buttonBody" data-key="ButtonBody" value="#606060">
+                                <input type="text" class="color-hex" placeholder="606060">
+                            </div>
+                        </div>
+                        <div class="setting-item">
+                            <label for="buttonBodyHover">ボタン背景色（ホバー）</label>
+                            <div class="color-input-group">
+                                <input type="color" id="buttonBodyHover" data-key="ButtonBodyHover" value="#808080">
+                                <input type="text" class="color-hex" placeholder="808080">
+                            </div>
+                        </div>
+                        <div class="setting-item">
+                            <label for="buttonBodyPress">ボタン背景色（押下）</label>
+                            <div class="color-input-group">
+                                <input type="color" id="buttonBodyPress" data-key="ButtonBodyPress" value="#a0a0a0">
+                                <input type="text" class="color-hex" placeholder="a0a0a0">
+                            </div>
+                        </div>
+                        <div class="setting-item">
+                            <label for="buttonBodySelect">ボタン背景色（選択）</label>
+                            <div class="color-input-group">
+                                <input type="color" id="buttonBodySelect" data-key="ButtonBodySelect" value="#7070c0">
+                                <input type="text" class="color-hex" placeholder="7070c0">
+                            </div>
+                        </div>
+                        <div class="setting-item">
+                            <label for="layer">レイヤー背景色</label>
+                            <div class="color-input-group">
+                                <input type="color" id="layer" data-key="Layer" value="#404040">
+                                <input type="text" class="color-hex" placeholder="404040">
+                            </div>
+                        </div>
+                        <div class="setting-item">
+                            <label for="layerHeader">レイヤーヘッダー背景色</label>
+                            <div class="color-input-group">
+                                <input type="color" id="layerHeader" data-key="LayerHeader" value="#4a4a4a">
+                                <input type="text" class="color-hex" placeholder="4a4a4a">
+                            </div>
+                        </div>
+                        <div class="setting-item">
+                            <label for="layerHover">レイヤー背景色（ホバー）</label>
+                            <div class="color-input-group">
+                                <input type="color" id="layerHover" data-key="LayerHover" value="#585858">
+                                <input type="text" class="color-hex" placeholder="585858">
+                            </div>
+                        </div>
+                        <div class="setting-item">
+                            <label for="objectVideo">映像オブジェクト色（グラデーション）</label>
+                            <div class="gradient-input-group">
+                                <div class="color-input-group">
+                                    <input type="color" id="objectVideo1" data-key="ObjectVideo" data-index="0" value="#3040e0">
+                                    <input type="text" class="color-hex" placeholder="3040e0">
+                                </div>
+                                <div class="color-input-group">
+                                    <input type="color" id="objectVideo2" data-key="ObjectVideo" data-index="1" value="#2030c0">
+                                    <input type="text" class="color-hex" placeholder="2030c0">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="setting-item">
+                            <label for="objectAudio">音声オブジェクト色（グラデーション）</label>
+                            <div class="gradient-input-group">
+                                <div class="color-input-group">
+                                    <input type="color" id="objectAudio1" data-key="ObjectAudio" data-index="0" value="#d04030">
+                                    <input type="text" class="color-hex" placeholder="d04030">
+                                </div>
+                                <div class="color-input-group">
+                                    <input type="color" id="objectAudio2" data-key="ObjectAudio" data-index="1" value="#b83020">
+                                    <input type="text" class="color-hex" placeholder="b83020">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="setting-item">
+                            <label for="objectVideoSelect">映像オブジェクト色（選択時）</label>
+                            <div class="color-input-group">
+                                <input type="color" id="objectVideoSelect" data-key="ObjectVideoSelect" value="#5060f0">
+                                <input type="text" class="color-hex" placeholder="5060f0">
+                            </div>
+                        </div>
+                        <div class="setting-item">
+                            <label for="objectAudioSelect">音声オブジェクト色（選択時）</label>
+                            <div class="color-input-group">
+                                <input type="color" id="objectAudioSelect" data-key="ObjectAudioSelect" value="#e06050">
+                                <input type="text" class="color-hex" placeholder="e06050">
+                            </div>
+                        </div>
+                        <div class="setting-item">
+                            <label for="objectControl">制御オブジェクト色（グラデーション）</label>
+                            <div class="gradient-input-group">
+                                <div class="color-input-group">
+                                    <input type="color" id="objectControl1" data-key="ObjectControl" data-index="0" value="#30b0c0">
+                                    <input type="text" class="color-hex" placeholder="30b0c0">
+                                </div>
+                                <div class="color-input-group">
+                                    <input type="color" id="objectControl2" data-key="ObjectControl" data-index="1" value="#2090a0">
+                                    <input type="text" class="color-hex" placeholder="2090a0">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="setting-item">
+                            <label for="objectControlSelect">制御オブジェクト色（選択時）</label>
+                            <div class="color-input-group">
+                                <input type="color" id="objectControlSelect" data-key="ObjectControlSelect" value="#50c0d0">
+                                <input type="text" class="color-hex" placeholder="50c0d0">
+                            </div>
+                        </div>
+                        <div class="setting-item">
+                            <label for="objectVideoFilter">映像フィルタオブジェクト色（グラデーション）</label>
+                            <div class="gradient-input-group">
+                                <div class="color-input-group">
+                                    <input type="color" id="objectVideoFilter1" data-key="ObjectVideoFilter" data-index="0" value="#30b030">
+                                    <input type="text" class="color-hex" placeholder="30b030">
+                                </div>
+                                <div class="color-input-group">
+                                    <input type="color" id="objectVideoFilter2" data-key="ObjectVideoFilter" data-index="1" value="#209020">
+                                    <input type="text" class="color-hex" placeholder="209020">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="setting-item">
+                            <label for="objectVideoFilterSelect">映像フィルタオブジェクト色（選択時）</label>
+                            <div class="color-input-group">
+                                <input type="color" id="objectVideoFilterSelect" data-key="ObjectVideoFilterSelect" value="#50c050">
+                                <input type="text" class="color-hex" placeholder="50c050">
+                            </div>
+                        </div>
+                        <div class="setting-item">
+                            <label for="objectAudioFilter">音声フィルタオブジェクト色（グラデーション）</label>
+                            <div class="gradient-input-group">
+                                <div class="color-input-group">
+                                    <input type="color" id="objectAudioFilter1" data-key="ObjectAudioFilter" data-index="0" value="#b8b030">
+                                    <input type="text" class="color-hex" placeholder="b8b030">
+                                </div>
+                                <div class="color-input-group">
+                                    <input type="color" id="objectAudioFilter2" data-key="ObjectAudioFilter" data-index="1" value="#989020">
+                                    <input type="text" class="color-hex" placeholder="989020">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="setting-item">
+                            <label for="objectAudioFilterSelect">音声フィルタオブジェクト色（選択時）</label>
+                            <div class="color-input-group">
+                                <input type="color" id="objectAudioFilterSelect" data-key="ObjectAudioFilterSelect" value="#c8c050">
+                                <input type="text" class="color-hex" placeholder="c8c050">
+                            </div>
+                        </div>
+                        <div class="setting-item">
+                            <label for="objectHover">オブジェクト枠色（ホバー）</label>
+                            <div class="color-input-group">
+                                <input type="color" id="objectHover" data-key="ObjectHover" value="#ffffffa0">
+                                <input type="text" class="color-hex" placeholder="ffffffa0">
+                            </div>
+                        </div>
+                        <div class="setting-item">
+                            <label for="objectFocus">オブジェクト枠色（フォーカス）</label>
+                            <div class="color-input-group">
+                                <input type="color" id="objectFocus" data-key="ObjectFocus" value="#c0c0c0">
+                                <input type="text" class="color-hex" placeholder="c0c0c0">
+                            </div>
+                        </div>
+                        <div class="setting-item">
+                            <label for="objectSection">オブジェクト中間点色</label>
+                            <div class="color-input-group">
+                                <input type="color" id="objectSection" data-key="ObjectSection" value="#a0a0a0">
+                                <input type="text" class="color-hex" placeholder="a0a0a0">
+                            </div>
+                        </div>
+                        <div class="setting-item">
+                            <label for="clippingObject">クリッピングオブジェクト色</label>
+                            <div class="color-input-group">
+                                <input type="color" id="clippingObject" data-key="ClippingObject" value="#00e0e0">
+                                <input type="text" class="color-hex" placeholder="00e0e0">
+                            </div>
+                        </div>
+                        <div class="setting-item">
+                            <label for="clippingObjectMask">クリッピングオブジェクト視覚化色</label>
+                            <div class="color-input-group">
+                                <input type="color" id="clippingObjectMask" data-key="ClippingObjectMask" value="#00e0e040">
+                                <input type="text" class="color-hex" placeholder="00e0e040">
+                            </div>
+                        </div>
+                        <div class="setting-item">
+                            <label for="anchor">アンカー枠色</label>
+                            <div class="color-input-group">
+                                <input type="color" id="anchor" data-key="Anchor" value="#c0c0c0">
+                                <input type="text" class="color-hex" placeholder="c0c0c0">
+                            </div>
+                        </div>
+                        <div class="setting-item">
+                            <label for="anchorLine">アンカー線色</label>
+                            <div class="color-input-group">
+                                <input type="color" id="anchorLine" data-key="AnchorLine" value="#ffffff80">
+                                <input type="text" class="color-hex" placeholder="ffffff80">
+                            </div>
+                        </div>
+                        <div class="setting-item">
+                            <label for="anchorIn">アンカー枠色（開始）</label>
+                            <div class="color-input-group">
+                                <input type="color" id="anchorIn" data-key="AnchorIn" value="#a0ffa0">
+                                <input type="text" class="color-hex" placeholder="a0ffa0">
+                            </div>
+                        </div>
+                        <div class="setting-item">
+                            <label for="anchorOut">アンカー枠色（終了）</label>
+                            <div class="color-input-group">
+                                <input type="color" id="anchorOut" data-key="AnchorOut" value="#ffa0a0">
+                                <input type="text" class="color-hex" placeholder="ffa0a0">
+                            </div>
+                        </div>
+                        <div class="setting-item">
+                            <label for="anchorHover">アンカー枠色（ホバー）</label>
+                            <div class="color-input-group">
+                                <input type="color" id="anchorHover" data-key="AnchorHover" value="#ffffff80">
+                                <input type="text" class="color-hex" placeholder="ffffff80">
+                            </div>
+                        </div>
+                        <div class="setting-item">
+                            <label for="anchorSelect">アンカー枠色（選択）</label>
+                            <div class="color-input-group">
+                                <input type="color" id="anchorSelect" data-key="AnchorSelect" value="#c8c8c8">
+                                <input type="text" class="color-hex" placeholder="c8c8c8">
+                            </div>
+                        </div>
+                        <div class="setting-item">
+                            <label for="anchorEdge">アンカー枠縁色</label>
+                            <div class="color-input-group">
+                                <input type="color" id="anchorEdge" data-key="AnchorEdge" value="#00000080">
+                                <input type="text" class="color-hex" placeholder="00000080">
+                            </div>
+                        </div>
+                        <div class="setting-item">
+                            <label for="centerGroup">中心点色（グループ）</label>
+                            <div class="color-input-group">
+                                <input type="color" id="centerGroup" data-key="CenterGroup" value="#60c060">
+                                <input type="text" class="color-hex" placeholder="60c060">
+                            </div>
+                        </div>
+                        <div class="setting-item">
+                            <label for="handleX">ハンドルX色</label>
+                            <div class="color-input-group">
+                                <input type="color" id="handleX" data-key="HandleX" value="#f05050">
+                                <input type="text" class="color-hex" placeholder="f05050">
+                            </div>
+                        </div>
+                        <div class="setting-item">
+                            <label for="handleY">ハンドルY色</label>
+                            <div class="color-input-group">
+                                <input type="color" id="handleY" data-key="HandleY" value="#208020">
+                                <input type="text" class="color-hex" placeholder="208020">
+                            </div>
+                        </div>
+                        <div class="setting-item">
+                            <label for="handleZ">ハンドルZ色</label>
+                            <div class="color-input-group">
+                                <input type="color" id="handleZ" data-key="HandleZ" value="#5050f0">
+                                <input type="text" class="color-hex" placeholder="5050f0">
+                            </div>
+                        </div>
+                        <div class="setting-item">
+                            <label for="handleXHover">ハンドルX色（ホバー）</label>
+                            <div class="color-input-group">
+                                <input type="color" id="handleXHover" data-key="HandleXHover" value="#ffa0a0">
+                                <input type="text" class="color-hex" placeholder="ffa0a0">
+                            </div>
+                        </div>
+                        <div class="setting-item">
+                            <label for="handleYHover">ハンドルY色（ホバー）</label>
+                            <div class="color-input-group">
+                                <input type="color" id="handleYHover" data-key="HandleYHover" value="#70b070">
+                                <input type="text" class="color-hex" placeholder="70b070">
+                            </div>
+                        </div>
+                        <div class="setting-item">
+                            <label for="handleZHover">ハンドルZ色（ホバー）</label>
+                            <div class="color-input-group">
+                                <input type="color" id="handleZHover" data-key="HandleZHover" value="#a0a0ff">
+                                <input type="text" class="color-hex" placeholder="a0a0ff">
+                            </div>
+                        </div>
+                        <div class="setting-item">
+                            <label for="outsideDisplay">表示領域外色</label>
+                            <div class="color-input-group">
+                                <input type="color" id="outsideDisplay" data-key="OutsideDisplay" value="#404040">
+                                <input type="text" class="color-hex" placeholder="404040">
+                            </div>
+                        </div>
+                        <div class="setting-item">
+                            <label for="grouping">グループ化背景色</label>
+                            <div class="color-input-group">
+                                <input type="color" id="grouping" data-key="Grouping" value="#383838">
+                                <input type="text" class="color-hex" placeholder="383838">
+                            </div>
+                        </div>
+                        <div class="setting-item">
+                            <label for="groupingHover">グループ化背景色（ホバー）</label>
+                            <div class="color-input-group">
+                                <input type="color" id="groupingHover" data-key="GroupingHover" value="#404040">
+                                <input type="text" class="color-hex" placeholder="404040">
+                            </div>
+                        </div>
+                        <div class="setting-item">
+                            <label for="groupingSelect">グループ化背景色（選択）</label>
+                            <div class="color-input-group">
+                                <input type="color" id="groupingSelect" data-key="GroupingSelect" value="#484848">
+                                <input type="text" class="color-hex" placeholder="484848">
+                            </div>
+                        </div>
+                        <div class="setting-item">
+                            <label for="borderSelect">枠線色（選択）</label>
+                            <div class="color-input-group">
+                                <input type="color" id="borderSelect" data-key="BorderSelect" value="#e0e0e0">
+                                <input type="text" class="color-hex" placeholder="e0e0e0">
+                            </div>
+                        </div>
+                        <div class="setting-item">
+                            <label for="border">枠線色</label>
+                            <div class="color-input-group">
+                                <input type="color" id="border" data-key="Border" value="#909090">
+                                <input type="text" class="color-hex" placeholder="909090">
+                            </div>
+                        </div>
+                        <div class="setting-item">
+                            <label for="borderFocus">枠線色（フォーカス）</label>
+                            <div class="color-input-group">
+                                <input type="color" id="borderFocus" data-key="BorderFocus" value="#8080e0">
+                                <input type="text" class="color-hex" placeholder="8080e0">
+                            </div>
+                        </div>
+                        <div class="setting-item">
+                            <label for="sliderCursor">スライダーカーソル色</label>
+                            <div class="color-input-group">
+                                <input type="color" id="sliderCursor" data-key="SliderCursor" value="#b88070">
+                                <input type="text" class="color-hex" placeholder="b88070">
+                            </div>
+                        </div>
+                        <div class="setting-item">
+                            <label for="trackBarRange">トラックバー範囲色</label>
+                            <div class="color-input-group">
+                                <input type="color" id="trackBarRange" data-key="TrackBarRange" value="#282828">
+                                <input type="text" class="color-hex" placeholder="282828">
+                            </div>
+                        </div>
+                        <div class="setting-item">
+                            <label for="zoomGauge">ズームゲージ色</label>
+                            <div class="color-input-group">
+                                <input type="color" id="zoomGauge" data-key="ZoomGauge" value="#60a0ff">
+                                <input type="text" class="color-hex" placeholder="60a0ff">
+                            </div>
+                        </div>
+                        <div class="setting-item">
+                            <label for="zoomGaugeHover">ズームゲージ色（ホバー）</label>
+                            <div class="color-input-group">
+                                <input type="color" id="zoomGaugeHover" data-key="ZoomGaugeHover" value="#80c0ff">
+                                <input type="text" class="color-hex" placeholder="80c0ff">
+                            </div>
+                        </div>
+                        <div class="setting-item">
+                            <label for="zoomGaugeOff">ズームゲージ色（オフ）</label>
+                            <div class="color-input-group">
+                                <input type="color" id="zoomGaugeOff" data-key="ZoomGaugeOff" value="#204080">
+                                <input type="text" class="color-hex" placeholder="204080">
+                            </div>
+                        </div>
+                        <div class="setting-item">
+                            <label for="zoomGaugeOffHover">ズームゲージ色（オフ・ホバー）</label>
+                            <div class="color-input-group">
+                                <input type="color" id="zoomGaugeOffHover" data-key="ZoomGaugeOffHover" value="#3060a0">
+                                <input type="text" class="color-hex" placeholder="3060a0">
+                            </div>
+                        </div>
+                        <div class="setting-item">
+                            <label for="frameCursor">フレームカーソル色</label>
+                            <div class="color-input-group">
+                                <input type="color" id="frameCursor" data-key="FrameCursor" value="#c83030e0">
+                                <input type="text" class="color-hex" placeholder="c83030e0">
+                            </div>
+                        </div>
+                        <div class="setting-item">
+                            <label for="frameCursorWide">フレームカーソル色（ワイド）</label>
+                            <div class="color-input-group">
+                                <input type="color" id="frameCursorWide" data-key="FrameCursorWide" value="#c8303080">
+                                <input type="text" class="color-hex" placeholder="c8303080">
+                            </div>
+                        </div>
+                        <div class="setting-item">
+                            <label for="playerCursor">プレイヤーカーソル色</label>
+                            <div class="color-input-group">
+                                <input type="color" id="playerCursor" data-key="PlayerCursor" value="#e0e080e0">
+                                <input type="text" class="color-hex" placeholder="e0e080e0">
+                            </div>
+                        </div>
+                        <div class="setting-item">
+                            <label for="guideLine">ガイドライン色</label>
+                            <div class="color-input-group">
+                                <input type="color" id="guideLine" data-key="GuideLine" value="#606060c0">
+                                <input type="text" class="color-hex" placeholder="606060c0">
+                            </div>
+                        </div>
+                        <div class="setting-item">
+                            <label for="layerDisable">レイヤー背景色（非表示）</label>
+                            <div class="color-input-group">
+                                <input type="color" id="layerDisable" data-key="LayerDisable" value="#343434">
+                                <input type="text" class="color-hex" placeholder="343434">
+                            </div>
+                        </div>
+                        <div class="setting-item">
+                            <label for="layerRange">レイヤー範囲背景色</label>
+                            <div class="color-input-group">
+                                <input type="color" id="layerRange" data-key="LayerRange" value="#70707038">
+                                <input type="text" class="color-hex" placeholder="70707038">
+                            </div>
+                        </div>
+                        <div class="setting-item">
+                            <label for="layerRangeFrame">レイヤー範囲枠線色</label>
+                            <div class="color-input-group">
+                                <input type="color" id="layerRangeFrame" data-key="LayerRangeFrame" value="#707070c8">
+                                <input type="text" class="color-hex" placeholder="707070c8">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- レイアウト設定セクション -->
+                <div id="layout" class="section">
+                    <h2><i class="ti ti-layout"></i> レイアウト設定</h2>
+                    <div class="settings-grid">
+                        <div class="setting-item">
+                            <label for="windowSeparatorSize">ウィンドウ間サイズ</label>
+                            <input type="number" id="windowSeparatorSize" data-key="WindowSeparatorSize" placeholder="7">
+                        </div>
+                        <div class="setting-item">
+                            <label for="scrollBarSize">スクロールバーサイズ</label>
+                            <input type="number" id="scrollBarSize" data-key="ScrollBarSize" placeholder="20">
+                        </div>
+                        <div class="setting-item">
+                            <label for="footerHeight">フッター高さ</label>
+                            <input type="number" id="footerHeight" data-key="FooterHeight" placeholder="24">
+                        </div>
+                        <div class="setting-item">
+                            <label for="titleHeaderHeight">タイトルヘッダーサイズ</label>
+                            <input type="number" id="titleHeaderHeight" data-key="TitleHeaderHeight" placeholder="18">
+                        </div>
+                        <div class="setting-item">
+                            <label for="timeGaugeHeight">タイムゲージ高さ</label>
+                            <input type="number" id="timeGaugeHeight" data-key="TimeGaugeHeight" placeholder="32">
+                        </div>
+                        <div class="setting-item">
+                            <label for="layerHeight">レイヤー高さ</label>
+                            <input type="number" id="layerHeight" data-key="LayerHeight" placeholder="32">
+                        </div>
+                        <div class="setting-item">
+                            <label for="layerHeaderWidth">レイヤー名幅</label>
+                            <input type="number" id="layerHeaderWidth" data-key="LayerHeaderWidth" placeholder="96">
+                        </div>
+                        <div class="setting-item">
+                            <label for="settingItemHeight">設定項目高さ</label>
+                            <input type="number" id="settingItemHeight" data-key="SettingItemHeight" placeholder="22">
+                        </div>
+                        <div class="setting-item">
+                            <label for="settingHeaderHeight">設定ヘッダー高さ</label>
+                            <input type="number" id="settingHeaderHeight" data-key="SettingHeaderHeight" placeholder="48">
+                        </div>
+                        <div class="setting-item">
+                            <label for="playerControlHeight">プレイヤーコントローラー高さ</label>
+                            <input type="number" id="playerControlHeight" data-key="PlayerControlHeight" placeholder="46">
+                        </div>
+                        <div class="setting-item">
+                            <label for="explorerHeaderHeight">メディアエクスプローラーヘッダー高さ</label>
+                            <input type="number" id="explorerHeaderHeight" data-key="ExplorerHeaderHeight" placeholder="28">
+                        </div>
+                        <div class="setting-item">
+                            <label for="explorerWindowNum">メディアエクスプローラー数</label>
+                            <input type="number" id="explorerWindowNum" data-key="ExplorerWindowNum" placeholder="4">
+                        </div>
+                        <div class="setting-item">
+                            <label for="listItemHeight">リスト選択項目高さ</label>
+                            <input type="number" id="listItemHeight" data-key="ListItemHeight" placeholder="26">
+                        </div>
+                        <div class="setting-item">
+                            <label for="settingItemHeaderWidth">設定項目ヘッダー幅</label>
+                            <input type="number" id="settingItemHeaderWidth" data-key="SettingItemHeaderWidth" placeholder="96">
+                        </div>
+                        <div class="setting-item">
+                            <label for="settingItemMarginWidth">設定項目マージン幅</label>
+                            <input type="number" id="settingItemMarginWidth" data-key="SettingItemMarginWidth" placeholder="6">
+                        </div>
+                    </div>
+                </div>
+
+                <!-- フォーマット設定セクション -->
+                <div id="format" class="section">
+                    <h2><i class="ti ti-code"></i> フォーマット設定</h2>
+                    <div class="settings-grid">
+                        <div class="setting-item full-width">
+                            <label for="footerLeft">フッター左側フォーマット</label>
+                            <textarea id="footerLeft" data-key="FooterLeft" rows="3" placeholder="{CurrentTime} / {TotalTime}  |  {CurrentFrame} / {TotalFrame}"></textarea>
+                            <div class="format-help">
+                                <strong>利用可能な変数:</strong><br>
+                                {ProjectName}, {SceneName}, {Resolution}, {FrameRate}, {SamplingRate}, {CurrentTime}, {TotalTime}, {CurrentFrame}, {TotalFrame}
+                            </div>
+                        </div>
+                        <div class="setting-item full-width">
+                            <label for="footerRight">フッター右側フォーマット</label>
+                            <textarea id="footerRight" data-key="FooterRight" rows="3" placeholder="{SceneName}  |  {Resolution}  |  {FrameRate}  |  {SamplingRate}"></textarea>
+                            <div class="format-help">
+                                <strong>利用可能な変数:</strong><br>
+                                {ProjectName}, {SceneName}, {Resolution}, {FrameRate}, {SamplingRate}, {CurrentTime}, {TotalTime}, {CurrentFrame}, {TotalFrame}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="preview-panel">
+            <h3><i class="ti ti-palette"></i> カラープレビュー</h3>
+            <div class="preview-content">
+                <div class="color-preview-grid">
+                    <div class="color-preview-item">
+                        <div class="color-preview-label">背景色</div>
+                        <div class="color-preview-box" id="previewBackground"></div>
+                    </div>
+                    <div class="color-preview-item">
+                        <div class="color-preview-label">テキスト色</div>
+                        <div class="color-preview-box" id="previewText"></div>
+                    </div>
+                    <div class="color-preview-item">
+                        <div class="color-preview-label">ボタン色</div>
+                        <div class="color-preview-box" id="previewButton"></div>
+                    </div>
+                    <div class="color-preview-item">
+                        <div class="color-preview-label">レイヤー色</div>
+                        <div class="color-preview-box" id="previewLayer"></div>
+                    </div>
+                    <div class="color-preview-item">
+                        <div class="color-preview-label">フッター色</div>
+                        <div class="color-preview-box" id="previewFooter"></div>
+                    </div>
+                    <div class="color-preview-item">
+                        <div class="color-preview-label">映像オブジェクト</div>
+                        <div class="color-preview-box gradient" id="previewObjectVideo"></div>
+                    </div>
+                    <div class="color-preview-item">
+                        <div class="color-preview-label">音声オブジェクト</div>
+                        <div class="color-preview-box gradient" id="previewObjectAudio"></div>
+                    </div>
+                    <div class="color-preview-item">
+                        <div class="color-preview-label">制御オブジェクト</div>
+                        <div class="color-preview-box gradient" id="previewObjectControl"></div>
+                    </div>
+                    <div class="color-preview-item">
+                        <div class="color-preview-label">映像フィルタ</div>
+                        <div class="color-preview-box gradient" id="previewObjectVideoFilter"></div>
+                    </div>
+                    <div class="color-preview-item">
+                        <div class="color-preview-label">音声フィルタ</div>
+                        <div class="color-preview-box gradient" id="previewObjectAudioFilter"></div>
+                    </div>
+                    <div class="color-preview-item">
+                        <div class="color-preview-label">フッター進捗</div>
+                        <div class="color-preview-box gradient" id="previewFooterProgress"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <input type="file" id="fileInput" accept=".conf" style="display: none;">
+    <script src="script.js"></script>
+</body>
+</html> 
